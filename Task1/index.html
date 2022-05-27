@@ -1,28 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Let's Grow More</title>
-    <script src="https://kit.fontawesome.com/4d3604cf2d.js" crossorigin="anonymous"></script>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">  
+    <title>Todo List App</title>
     <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+  </head>
+  <body>
+    <hr>
+    <h1 class="todolist"> To-Do List</h1>
+    <hr>
     <div class="wrapper">
-        <header>To-Do App</header>
-        <div class="inputfield">
-            <input type="text" placeholder="Add your task">
-            <button><i class="fas fa-plus"></i></button>
+      <div class="taskinput">
+        <input type="text" placeholder="Add a new task">
+      </div>
+      <div class="controls">
+        <div class="filters">
+          <span class="active" id="all">All</span>
+          <span id="pending">Pending</span>
+          <span id="completed">Completed</span>
         </div>
-        <ul class="todo"></ul>
-        <div class="foot">
-            <span>You have <span class="pendingNumb"></span> pending tasks</span>
-            <button>Clear All</button>
-        </div>
+        <button class="clear">Clear All</button>
+      </div>
+      <ul class="tasks"></ul>
     </div>
 
     <script src="script.js"></script>
-    
-</body>
+
+  </body>
 </html>

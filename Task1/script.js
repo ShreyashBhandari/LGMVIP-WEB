@@ -1,130 +1,106 @@
-// const inputBox = document.querySelector(".inputfield input");
-// const addBtn = document.querySelector(".inputfield button");
-// const todolist = document.querySelector(".todo");
-// const deleteAll = document.querySelector(".foot button");
+const taskInput = document.querySelector(".taskinput input"),
+filters = document.querySelectorAll(".filters span"),
+clearAll = document.querySelector(".clear"),
+taskBox = document.querySelector(".tasks");
 
+let editId,
+isEditTask = false,
+todos = JSON.parse(localStorage.getItem("todo-list"));
 
-// inputBox.onkeyup = ()=> {
-//     let userData = inputBox.value;
-//     if(userData.trim() != 0) {
-//         addBtn.classList.add("active");
-//     }else{
-//         addBtn.classList.remove("active")
-//     }
-// } 
-// showTasks();
-// addBtn.onclick = () =>{
-//     let userData = inputBox.value;
-//     let getLocalStorage = localStorage.getItem("NEW TODO");
-//     if(getLocalStorage == null){
-//         listArr = [];
-//     }else{
-//         listArr = JSON.parse(getlocalStorage);
-//     }
-//     listArr.push(userData);
-//     localStorage.setItem("NEW TODO" , JSON.stringify(listArr));
-//     showTasks();
-//     addBtn.classList.remove("active");
-// }
-// //                           ADDING TASKS
-// function showTasks(){
-//     let getLocalStorage = localStorage.getItem("NEW TODO");
-
-//     if(getLocalStorage == null){
-//         listArr = [];
-//     }else{
-//         listArr = JSON.parse(getLocalStorage);
-//     }
-//     //                      MENTIONING NUMBER OF TASK
-//     const nofTask = document.querySelector(".nofTask");
-//     nofTask.textContent = listArr.length;
-
-//     if(listArr.length > 0){
-//         deleteAll.classList.add("active");
-//     }else{
-//         deleteAll.classList.remove("active");
-//     }
-
-//     let newLiTag = '';
-//     listArr.forEach((element, index) => {
-//         newLiTag += `<li> ${element} <span onclick = "deleteTask(${index})"; ><i class="fa-solid fa-trash-can"></i></span></li>`;
-//     });
-
-//     todolist.innerHTML = newLiTag;
-//     inputBox.value = "";
-// }
-// //                              DELETE TASKS
-// function deleteTask(index){
-//     let getLocalStorage = localStorage.getItem("NEW TODO");
-//     listArr = JSON.parse(getLocalStorage);
-//     listArr.splice(index , 1);
-    
-//     localStorage.setItem("NEW TODO" , JSON.stringify(listArr));
-//     showTasks();
-// }
-// //                              DELTE ALL AT ONCE
-// deleteAll.onclick = () =>{
-//     listArr = [];
-//     localStorage.setItem("NEW TODO" , JSON.stringify(listArr));
-//     showTasks();
-// }
-
-
-const inputBox = document.querySelector(".inputfield input");
-const addBtn = document.querySelector(".inputfield button");
-const todoList = document.querySelector(".todo")
-
-inputBox.onkeyup = ()=>{
-    let userData = inputBox.value;
-    if(userData.trim() != 0){
-        addBtn.classList.add("active");
-    }else{
-        addBtn.classList.remove("active");
-    }
-}       
-showTasks();
-
-addBtn.onclick = ()=>{
-    let userData = inputBox.value;
-    let getLocalStorage = localStorage.getItem("New Todo");
-    if(getLocalStorage == null){
-        listArr = [];
-    }else{
-        listArr = JSON.parse(getLocalStorage);
-    }
-    const pendingNumb = document.querySelector(".pendingNumb");
-    pendingNumb.textContent = listArr.length; 
-    listArr.push(userData);
-    localStorage.setItem("New Todo" , JSON.stringify(listArr));
-    showTasks();
-}
-
-function showTasks(){
-    let getLocalStorage = localStorage.getItem("New Todo");
-    if(getLocalStorage == null){
-        listArr = [];
-    }else{
-        listArr = JSON.parse(getLocalStorage);
-    }
-    let newLiTag = '';
-    listArr.forEach((element , index) => {
-        newLiTag  += `<li> ${element} <span onclick = "deleteTask(${index})"; ><i class="fa-solid fa-trash-can"></i></span></li>`
+filters.forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelector("span.active").classList.remove("active");
+        btn.classList.add("active");
+        showTodo(btn.id);
     });
-    todoList.innerHTML = newLiTag;
-    inputBox.value = "";
+});
+
+function showTodo(filter) {
+    let liTag = "";
+    if(todos) {
+        todos.forEach((todo, id) => {
+            let completed = todo.status == "completed" ? "checked" : "";
+            if(filter == todo.status || filter == "all") {
+                liTag += `<li class="task">
+                            <label for="${id}">
+                                <input onclick="updateStatus(this)" type="checkbox" id="${id}" ${completed}>
+                                <p class="${completed}">${todo.name}</p>
+                            </label>
+                            <div class="settings">
+                                <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
+                                <ul class="task-menu">
+                                    <li onclick='editTask(${id}, "${todo.name}")'><i class="uil uil-pen"></i>Edit</li>
+                                    <li onclick='deleteTask(${id}, "${filter}")'><i class="uil uil-trash"></i>Delete</li>
+                                </ul>
+                            </div>
+                        </li>`;
+            }
+        });
+    }
+    taskBox.innerHTML = liTag || `<span>You don't have any task here</span>`;
+    let checkTask = taskBox.querySelectorAll(".task");
+    !checkTask.length ? clearAll.classList.remove("active") : clearAll.classList.add("active");
+    taskBox.offsetHeight >= 300 ? taskBox.classList.add("overflow") : taskBox.classList.remove("overflow");
+}
+showTodo("all");
+
+function showMenu(selectedTask) {
+    let menuDiv = selectedTask.parentElement.lastElementChild;
+    menuDiv.classList.add("show");
+    document.addEventListener("click", e => {
+        if(e.target.tagName != "I" || e.target != selectedTask) {
+            menuDiv.classList.remove("show");
+        }
+    });
 }
 
-function deleteTask(index){
-    let getLocalStorage = localStorage.getItem("New Todo");
-    listArr = JSON.parse(getLocalStorage);
-    listArr.splice(index, 1);
-
-    localStorage.setItem("New Todo" , JSON.stringify(listArr));
-    showTasks();
+function updateStatus(selectedTask) {
+    let taskName = selectedTask.parentElement.lastElementChild;
+    if(selectedTask.checked) {
+        taskName.classList.add("checked");
+        todos[selectedTask.id].status = "completed";
+    } else {
+        taskName.classList.remove("checked");
+        todos[selectedTask.id].status = "pending";
+    }
+    localStorage.setItem("todo-list", JSON.stringify(todos))
 }
 
-deleteAll.onclick = () =>{
-    listArr = [];
-    localStorage.setItem("NEW TODO" , JSON.stringify(listArr));
-    showTasks();
+function editTask(taskId, textName) {
+    editId = taskId;
+    isEditTask = true;
+    taskInput.value = textName;
+    taskInput.focus();
+    taskInput.classList.add("active");
 }
+
+function deleteTask(deleteId, filter) {
+    isEditTask = false;
+    todos.splice(deleteId, 1);
+    localStorage.setItem("todo-list", JSON.stringify(todos));
+    showTodo(filter);
+}
+
+clearAll.addEventListener("click", () => {
+    isEditTask = false;
+    todos.splice(0, todos.length);
+    localStorage.setItem("todo-list", JSON.stringify(todos));
+    showTodo()
+});
+
+taskInput.addEventListener("keyup", e => {
+    let userTask = taskInput.value.trim();
+    if(e.key == "Enter" && userTask) {
+        if(!isEditTask) {
+            todos = !todos ? [] : todos;
+            let taskInfo = {name: userTask, status: "pending"};
+            todos.push(taskInfo);
+        } else {
+            isEditTask = false;
+            todos[editId].name = userTask;
+        }
+        taskInput.value = "";
+        localStorage.setItem("todo-list", JSON.stringify(todos));
+        showTodo(document.querySelector("span.active").id);
+    }
+});
