@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Goldman&family=Monofett&family=Zilla+Slab+Highlight:wght@700&display=swap');
+body{
+    background: rgb(174,177,249);
+background: linear-gradient(0deg, rgba(174,177,249,1) 19%, rgba(89,224,240,1) 58%, rgba(81,114,255,1) 100%);
+}
+.container{
+    
+    text-align: center;
+}
+h1{
+    font-size: 35px;
+    font-family: 'Goldman', cursive;
+}
+sub{
+    font-size: small;
+}
+table{
+    padding-top: 10%;
+    margin: auto;
+}
+
+input{
+    /* border:5px solid rgb(51, 57, 236); */
+    border: none;
+    border-radius: 15px;
+    font-size: 35px;
+    height: 100px;
+    /* background-color: black; */
+}
+
+/* button{
+    font-family: 'Goldman', cursive;
+    border-radius: 500px;
+    font-size: 45px;
+    color: black;
+    /* opacity: 1; */
+    /* background: rgb(171, 138, 215);
+    width: 75px;
+    height: 55px;
+    margin: 8px;     */ 
+/* } */
+.box {
+    font-family: 'Goldman', cursive;
+    border-radius: 500px;
+    position: relative;
+    font-size: 40px;
+    vertical-align: middle;
+    color: #FE9A2E;
+    display: inline-block;
+    margin: 8px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    transition: 0.5s;
+    padding: 0 20px;
+    cursor: pointer;
+    border: 2px solid #FE9A2E;
+    -webkit-transition: 0.5s;
+  }
+  
+  .box:hover {
+    border: 2px solid rgba(239, 38, 19, 0);
+    color: rgb(255, 6, 226);
+  }
+  
+  .box::before,
+  .box::after {
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    -webkit-transform: scale(0);
+    transition: 0.5s;
+  }
+  .bar::before {
+    border-bottom: 3px solid #FFF;
+    border-left: 3px solid #FFF;
+    -webkit-transform-origin: 100% 0%;
+  }
+  
+  .bar::after {
+    border-top: 3px solid #FFF;
+    border-right: 3px solid #FFF;
+    -webkit-transform-origin: 0% 100%;
+  }
+  
+
+.calculator{
+    height: 600px;
+    padding: 19px;
+    display: inline-block;
+    background: rgba( 255, 255, 255, 0.25 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+    border-radius: 40px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+.outer{
+    background :rgb(123, 0, 255);
+}
+
